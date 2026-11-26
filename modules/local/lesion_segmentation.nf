@@ -9,9 +9,6 @@ process SEGMENTATION_LST_AI {
     label 'process_gpu'
     container 'frheault/sf-lesionflow-lst_ai:1.1.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1), path(flair)
 
@@ -19,6 +16,9 @@ process SEGMENTATION_LST_AI {
     tuple val(meta), path("lst_ai.nii.gz")     , emit: binary_mask
     tuple val(meta), path("lst_ai_prob.nii.gz"), emit: probability_map
     path "versions.yml"                        , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -70,9 +70,6 @@ process SEGMENTATION_SAMSEG {
     tag "$meta.id"
     container 'freesurfer/freesurfer:7.4.1'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_unstripped_mni), path(flair_unstripped_mni), path(fs_license)
 
@@ -80,6 +77,9 @@ process SEGMENTATION_SAMSEG {
     tuple val(meta), path("${meta.id}_samseg_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_samseg_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                     , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -139,9 +139,6 @@ process SEGMENTATION_WMH_SYNTHSEG {
     label 'process_gpu'
     container "ThoumyreStanislas/wmh-synthseg-minimal:1.0.0"
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(flair)
 
@@ -149,6 +146,9 @@ process SEGMENTATION_WMH_SYNTHSEG {
     tuple val(meta), path("${meta.id}_wmh-synthseg_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_wmh-synthseg_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -200,9 +200,6 @@ process SEGMENTATION_FAST_OUTLIER {
     tag "$meta.id"
     container 'frheault/sf-lesionflow-fast_outlier:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_mni), path(flair_mni)
 
@@ -210,6 +207,9 @@ process SEGMENTATION_FAST_OUTLIER {
     tuple val(meta), path("${meta.id}_fast-outlier_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_fast-outlier_zscore.nii.gz"), emit: probability_map
     path "versions.yml"                                          , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -260,9 +260,6 @@ process SEGMENTATION_FLAMES {
     tag "$meta.id"
     container 'frheault/sf-lesionflow-flames:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(flair_mni)
 
@@ -270,6 +267,9 @@ process SEGMENTATION_FLAMES {
     tuple val(meta), path("${meta.id}_flames_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_flames_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                     , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -327,9 +327,6 @@ process SEGMENTATION_TRUENET {
     label 'process_gpu'
     container 'frheault/sf-lesionflow-truenet:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1), path(flair)
 
@@ -337,6 +334,9 @@ process SEGMENTATION_TRUENET {
     tuple val(meta), path("truenet.nii.gz")     , emit: binary_mask
     tuple val(meta), path("truenet_prob.nii.gz"), emit: probability_map, optional: true
     path "versions.yml"                         , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -387,9 +387,6 @@ process SEGMENTATION_HYPERMAPP3R {
     tag "$meta.id"
     container 'mgoubran/hypermapper:latest'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_mni), path(flair_mni)
 
@@ -397,6 +394,9 @@ process SEGMENTATION_HYPERMAPP3R {
     tuple val(meta), path("${meta.id}_hypermapp3r_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_hypermapp3r_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                         , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -465,15 +465,15 @@ process PREPROC_SYNTHSEG {
     label 'process_gpu'
     container 'freesurfer/freesurfer:7.4.1'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(flair)
 
     output:
     tuple val(meta), path("${meta.id}_synthseg.nii.gz"), emit: synthseg
     path "versions.yml"                                , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -508,9 +508,6 @@ process SEGMENTATION_SEGCSVD {
     label 'process_gpu'
     container 'frheault/sf-lesionflow-segcsvd:rc03'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(flair_mni), path(synthseg)
 
@@ -518,6 +515,9 @@ process SEGMENTATION_SEGCSVD {
     tuple val(meta), path("${meta.id}_segcsvd_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_segcsvd_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                      , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -580,9 +580,6 @@ process SEGMENTATION_EMORY_ROBUST {
     label 'process_gpu'
     container 'emorycn2l/emory_robust_wmh:v1.2'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_mni), path(flair_mni)
 
@@ -590,6 +587,9 @@ process SEGMENTATION_EMORY_ROBUST {
     tuple val(meta), path("${meta.id}_emory_robust_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_emory_robust_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -636,9 +636,6 @@ process SEGMENTATION_MARS_WMH {
     label 'process_gpu'
     container 'ghcr.io/miac-research/wmh-nnunet:1.0.2'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_unstripped), path(flair_unstripped)
 
@@ -647,6 +644,9 @@ process SEGMENTATION_MARS_WMH {
     tuple val(meta), path("mars_wmh_prob.nii.gz"), emit: probability_map
     tuple val(meta), path("*_QC.html")           , emit: qc_html    , optional: true
     path "versions.yml"                          , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -714,9 +714,6 @@ process SEGMENTATION_BAWIL {
     label 'process_gpu'
     container 'frheault/sf-lesionflow-bawil:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     // 1 mm resampled, non-N4 FLAIR (full FOV) + its SynthStrip brain mask on the same grid
     // (framing box and, with ext.strip, skull removal).
@@ -726,6 +723,9 @@ process SEGMENTATION_BAWIL {
     tuple val(meta), path("bawil.nii.gz")     , emit: binary_mask
     tuple val(meta), path("bawil_prob.nii.gz"), emit: probability_map
     path "versions.yml"                       , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -786,9 +786,6 @@ process SEGMENTATION_MIMOSA {
     tag "$meta.id"
     container 'frheault/sf-lesionflow-mimosa:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_mni), path(flair_mni)
 
@@ -796,6 +793,9 @@ process SEGMENTATION_MIMOSA {
     tuple val(meta), path("${meta.id}_mimosa_binary.nii.gz"), emit: binary_mask
     tuple val(meta), path("${meta.id}_mimosa_prob.nii.gz")  , emit: probability_map
     path "versions.yml"                                     , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -840,9 +840,6 @@ process SEGMENTATION_SHIVAI {
     label 'process_gpu'
     container 'stanislasthoumyre/shivai:2.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(t1_mni), path(flair_mni), path(swi_mni)
 
@@ -850,6 +847,9 @@ process SEGMENTATION_SHIVAI {
     tuple val(meta), path("${meta.id}__wmh_mask.nii.gz.nii.gz") , emit: binary_mask
     tuple val(meta), path("${meta.id}__wmh_map.nii.gz ")        , emit: probability_map
     path "versions.yml"                                         , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
@@ -940,9 +940,6 @@ process SEGMENTATION_MINDGLIDE {
     label 'process_gpu'
     container 'frheault/sf-lesionflow-mindglide:1.0.0'
 
-    when:
-    task.ext.when == null || task.ext.when
-
     input:
     tuple val(meta), path(flair)
 
@@ -950,6 +947,9 @@ process SEGMENTATION_MINDGLIDE {
     tuple val(meta), path("mindglide.nii.gz")     , emit: binary_mask
     tuple val(meta), path("mindglide_prob.nii.gz"), emit: probability_map
     path "versions.yml"                           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     stub:
     """
